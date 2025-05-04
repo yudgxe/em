@@ -1,0 +1,164 @@
+basePath: /api/v1
+definitions:
+  model.Gender:
+    enum:
+    - male
+    - female
+    type: string
+    x-enum-varnames:
+    - EnumGenderMale
+    - EnumGenderFemale
+  model.User:
+    properties:
+      age:
+        type: integer
+      gender:
+        $ref: '#/definitions/model.Gender'
+      id:
+        type: integer
+      name:
+        type: string
+      nationality:
+        type: string
+      patronymic:
+        type: string
+      surname:
+        type: string
+    type: object
+  user.HttpError:
+    properties:
+      error:
+        type: string
+    type: object
+  user.createReq:
+    properties:
+      name:
+        type: string
+      patronymic:
+        type: string
+      surname:
+        type: string
+    required:
+    - name
+    - surname
+    type: object
+host: localhost:8080
+info:
+  contact: {}
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  title: EM API
+  version: "1.0"
+paths:
+  /user:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: User
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/user.createReq'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/model.User'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/user.HttpError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/user.HttpError'
+      summary: Create user
+      tags:
+      - user
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: User
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/model.User'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.User'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/user.HttpError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/user.HttpError'
+      summary: Update user
+      tags:
+      - user
+  /user/{id}:
+    delete:
+      consumes:
+      - application/json
+      parameters:
+      - description: User id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/user.HttpError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/user.HttpError'
+      summary: Delete user by id
+      tags:
+      - user
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: User id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.User'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/user.HttpError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/user.HttpError'
+      summary: Get user by id
+      tags:
+      - user
+swagger: "2.0"
